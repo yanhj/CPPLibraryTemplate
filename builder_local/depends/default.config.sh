@@ -1,0 +1,9 @@
+#!/bin/bash
+set -e
+
+CURRENT_DIR0=$(cd `dirname $0`; pwd)
+
+PROJET_ROOT=${CURRENT_DIR0}/../..
+BUILD_ROOT=${CURRENT_DIR0}/../build_app
+DEFAULT_BUILD_ROOT_DIR=${BUILD_ROOT}/macOS
+DEFAULT_PACKET_ROOT_DIR=${BUILD_ROOT}/macOS_packet

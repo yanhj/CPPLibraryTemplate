@@ -1,0 +1,21 @@
+{
+  "minimum_required": "0.99.0",
+  "platform_required": {
+      "rule": [
+          {
+              "platform": "windows",
+              "version": "2.0",
+              "list": [
+                  "windows"
+              ]
+          },
+          {
+              "platform": "macos",
+              "version": "2.0",
+              "list": [
+                  "macos"
+              ]
+          }
+      ]
+  }
+}

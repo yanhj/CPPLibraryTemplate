@@ -1,0 +1,12 @@
+{
+  "submodule" : [
+    {
+      "name" : "CMakeModule",
+      "url" : "git@techgit.meitu.com:MeituAR/cmake/CMakeModule.git",
+      "node" : {
+        "type" : "branch",
+        "info" : "master"
+      }
+    }
+  ]
+}

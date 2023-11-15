@@ -1,0 +1,258 @@
+#!/usr/bin/env groovy
+
+// 普通事件通知
+def JENKINS_MESSAGE(in_users,in_addition) {
+    def CONTENT = "{\"users\": [${in_users}], \"content\": \"😈 [${JOB_NAME}] #Build ${BUILD_NUMBER} 开始构建 \\n\\n 本次构建分支: ${BRANCH_NAME} \\n\\n JOB_URL: ${JOB_URL} \\n\\n BUILD_URL: ${BUILD_URL} \\n\\n ADDITION: ${in_addition}\"}"
+    println "CONTENT=${CONTENT}"
+    httpRequest \
+        contentType: 'APPLICATION_JSON_UTF8', \
+        httpMode: 'POST', \
+        requestBody: "$CONTENT", \
+        responseHandle: 'NONE', \
+        url: "$JENKINS_MESSAGE_ADDRESS"
+}
+
+// 构建成功通知
+def JENKINS_MESSAGE_SUCCESS(in_users,in_addition) {
+    def CONTENT = "{\"users\": [${in_users}], \"content\": \"✅ [${JOB_NAME}] #Build ${BUILD_NUMBER} 构建成功 \\n\\n 本次构建分支: ${BRANCH_NAME} \\n\\n JOB_URL: ${JOB_URL} \\n\\n BUILD_URL: ${BUILD_URL} \\n\\n ADDITION: ${in_addition}\"}"
+    println "CONTENT=${CONTENT}"
+    httpRequest \
+        contentType: 'APPLICATION_JSON_UTF8', \
+        httpMode: 'POST', \
+        requestBody: "$CONTENT", \
+        responseHandle: 'NONE', \
+        url: "$JENKINS_MESSAGE_ADDRESS"
+}
+
+// 构建失败通知
+def JENKINS_MESSAGE_FAILED(in_users,in_stage,in_addition) {
+    def CONTENT = "{\"users\": [${in_users}], \"content\": \"❌ [${JOB_NAME}] #Build ${BUILD_NUMBER} 构建失败 \\n\\n 失败阶段: ${in_stage} \\n\\n 本次构建分支: ${BRANCH_NAME} \\n\\n JOB_URL: ${JOB_URL} \\n\\n BUILD_URL: ${BUILD_URL} \\n\\n CONSOLE_URL: ${BUILD_URL}console \\n\\n ADDITION: ${in_addition}\"}"
+    println "CONTENT=${CONTENT}"
+    httpRequest \
+        contentType: 'APPLICATION_JSON_UTF8', \
+        httpMode: 'POST', \
+        requestBody: "$CONTENT", \
+        responseHandle: 'NONE', \
+        url: "$JENKINS_MESSAGE_ADDRESS"
+}
+
+// 开始编译的时候进行通知
+//JENKINS_MESSAGE("$JENKINS_AR_USERS","NULL")
+
+pipeline {
+    // 不指定Agent.
+    agent none
+
+    stages {
+		// check version 
+        stage ('check version') {
+            agent {
+                node {
+                    label 'macOS-01'
+                }
+            }
+                        
+            steps {
+                sh '''
+                ./build-script/jenkins/check-version.sh
+                '''
+            }
+
+            post {
+                failure {
+                    JENKINS_MESSAGE_FAILED("$JENKINS_AR_USERS","check version","NULL")
+                }
+            }
+        }
+        // clean node
+        stage ('clean') {
+            parallel {
+                stage ('clean-windows') {
+	                agent {
+	                    node {
+	                        label 'win10'
+	                    }
+	                }
+	                            
+	                steps {
+	                    bat '''
+	                    ./build-script/jenkins/clean.bat
+	                    '''
+	                }
+
+	                post {
+	                    failure {
+	                        JENKINS_MESSAGE_FAILED("$JENKINS_AR_USERS","clean-windows","NULL")
+	                    }
+	                }
+                }
+                stage ('clean-macos') {
+	                agent {
+	                    node {
+	                        label 'macOS-01'
+	                    }
+	                }
+	                            
+	                steps {
+	                    sh '''
+	                    ./build-script/jenkins/clean.sh
+	                    '''
+	                }
+
+	                post {
+	                    failure {
+	                        JENKINS_MESSAGE_FAILED("$JENKINS_AR_USERS","clean-macos","NULL")
+	                    }
+	                }
+                }
+            }
+        }
+        // build
+        stage ('build') {
+            parallel {
+                stage ('build-windows-x64') {
+	                agent {
+	                    node {
+	                        label 'win10'
+	                    }
+	                }
+	                            
+	                steps {
+	                    bat '''
+	                    ./build-script/jenkins/build64.bat
+	                    '''
+	                }
+
+	                post {
+	                    failure {
+	                        JENKINS_MESSAGE_FAILED("$JENKINS_AR_USERS","build-windows","NULL")
+	                    }
+	                }
+	            }
+                stage ('build-macos') {
+	                agent {
+	                    node {
+	                        label 'macOS-01'
+	                    }
+	                }
+	                            
+	                steps {
+	                    sh '''
+	                    ./build-script/jenkins/build.sh
+	                    '''
+	                }
+
+	                post {
+	                    failure {
+	                        JENKINS_MESSAGE_FAILED("$JENKINS_AR_USERS","build-macos","NULL")
+	                    }
+	                }
+	            }
+            }
+        }
+        // publish
+        stage ('publish-windows') {
+            agent {
+                node {
+                    label 'win10'
+                }
+            }
+                        
+            steps {
+                bat '''
+                ./build-script/jenkins/publish.bat
+                '''
+            }
+
+            post {
+                failure {
+                    JENKINS_MESSAGE_FAILED("$JENKINS_AR_USERS","publish-windows","NULL")
+                }
+            }
+        }
+        stage ('publish-macos') {
+            agent {
+                node {
+                    label 'macOS-01'
+                }
+            }
+                        
+            steps {
+                sh '''
+                ./build-script/jenkins/publish.sh
+                '''
+            }
+
+            post {
+                failure {
+                    JENKINS_MESSAGE_FAILED("$JENKINS_AR_USERS","publish-macos","NULL")
+                }
+            }
+        }
+
+        stage ('publish-smb') {
+                    agent {
+                        node {
+                            label 'macOS-01'
+                        }
+                    }
+
+                    steps {
+                        sh '''
+                        ./build-script/jenkins/publish-smb.sh
+                        '''
+                    }
+
+                    post {
+                        failure {
+                            JENKINS_MESSAGE_FAILED("$JENKINS_AR_USERS","publish-smb","NULL")
+                        }
+                    }
+                }
+
+        // tag
+        /*
+        stage ('tag') {
+            agent {
+                node {
+                    label 'macOS-01'
+                }
+            }
+                        
+            steps {
+                sh '''
+                ./build-script/jenkins/tag.sh
+                '''
+            }
+
+            post {
+                failure {
+                    JENKINS_MESSAGE_FAILED("$JENKINS_AR_USERS","tag","NULL")
+                }
+            }
+        }
+        */
+    }
+
+    post {
+        success {
+            JENKINS_MESSAGE_SUCCESS("$JENKINS_AR_USERS","NULL")
+        }
+        // always {
+        //     echo 'This will always run'
+        // }
+        // success {
+        //     echo 'This will run only if successful'
+        // }
+        // failure {
+        //     echo 'This will run only if failed'
+        // }
+        // unstable {
+        //     echo 'This will run only if the run was marked as unstable'
+        // }
+        // changed {
+        //     echo 'This will run only if the state of the Pipeline has changed'
+        //     echo 'For example, if the Pipeline was previously failing but is now successful'
+        // }
+    }
+}

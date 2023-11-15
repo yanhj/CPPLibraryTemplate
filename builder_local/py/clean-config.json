@@ -1,0 +1,7 @@
+{
+  "macos": [
+     "Frameworks/QtWebChannel.framework",
+      "Frameworks/QtWebEngineCore.framework",
+      "Frameworks/QtWebEngineWidgets.framework"
+  ]
+}
