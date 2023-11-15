@@ -8,9 +8,11 @@
 
 #pragma once
 
-class Version {
-public:
-    explicit Version();
+#include "Define.h"
+#include <string>
 
-    ~Version();
-};
+NS_CUSTOM_BEGIN
+
+EXAMPLE_API std::string fullVersion();
+
+NS_CUSTOM_END

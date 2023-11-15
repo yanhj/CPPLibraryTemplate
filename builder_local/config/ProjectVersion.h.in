@@ -1,0 +1,37 @@
+/// Note: This file is not part of the project build,
+/// it is used by CMake to generate the project version header file.
+
+#pragma once
+
+#include <string>
+
+class ProjectVersion {
+public:
+    static std::string name() {
+        return "${V_PROJ_NAME}";
+    }
+    static std::string version(){
+        return "${V_PROJ_VERSION}";
+    }
+    static std::string type(){
+        return "${V_PROJ_TYPE}";
+    }
+    static std::string build(){
+        return "${V_PROJ_BUILD}";
+    }
+    static std::string suffix(){
+        return "${V_PROJ_SUFFIX}";
+    }
+    static std::string author(){
+        return "${V_PROJ_AUTHOR}";
+    }
+
+    static std::string fullVersion() {
+        auto v = name() + "-" + version() + "-" + type() + "-" + build();
+        if(!suffix().empty()) {
+            v += "-";
+            v += suffix();
+        }
+        return v;
+    }
+};

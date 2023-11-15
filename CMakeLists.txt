@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.19)
 
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.14" CACHE STRING "Minimum OS X deployment version")
 set(CMAKE_OSX_ARCHITECTURES x86_64;arm64)
@@ -26,7 +26,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR}/third_party
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR}/third_party/CMakeModules)
 
 include(ImportPlatformDefined)
-
+include(builder_local/Config/ProjectVersion-config)
 
 set(BUILD_EXEC OFF)
 set(BUILD_SHARED_LIBS ON)
