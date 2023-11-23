@@ -94,21 +94,21 @@ cmake -G %BUILD_GENERATOR%                                  ^
       %QT_HOME_OPTION%                                      ^
       "%PROJET_ROOT%"
 
-if not errorlevel 0 exit /b -1
+if %ERRORLEVEL% neq 0 exit /b -1
 
 REM build Release
 "%MSBUILD_EXE%" "%BUILD_SUB_DIR%\CustomLib.sln" /p:Configuration=%build_type%
-if not errorlevel 0 exit /b -1
+if %ERRORLEVEL% neq 0 exit /b -1
 
 "%MSBUILD_EXE%" "%BUILD_SUB_DIR%\INSTALL.vcxproj" /p:Configuration=%build_type%
-if not errorlevel 0 exit /b -1
+if %ERRORLEVEL% neq 0 exit /b -1
 						
 REM build debug
 "%MSBUILD_EXE%" "%BUILD_SUB_DIR%\CustomLib.sln" /p:Configuration=Debug
-if not errorlevel 0 exit /b -1
+if %ERRORLEVEL% neq 0 exit /b -1
 
 "%MSBUILD_EXE%" "%BUILD_SUB_DIR%\INSTALL.vcxproj" /p:Configuration=Debug
-if not errorlevel 0 exit /b -1
+if %ERRORLEVEL% neq 0 exit /b -1
 
 rmdir /Q /S "%MKLINK_ROOT%"
 REM 还原到原来的盘符及路径
