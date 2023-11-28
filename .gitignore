@@ -5,3 +5,6 @@ builder_local/build_app
 third_party/modules/*
 !third_party/modules/gitem.config.json
 output/
+Install/
+src/ProjectVersion.h
+
