@@ -17,7 +17,7 @@ NS_CUSTOM_BEGIN
     }
 
     void setLogLevel(LogLevel level) {
-        g_mtDRLogLevel = level;
+        g_logLevel = level;
     }
 
 NS_CUSTOM_END

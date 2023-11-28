@@ -17,19 +17,19 @@ NS_CUSTOM_BEGIN
     typedef std::function<void(LogLevel level, char *data)> LogCallBackFunc;
     extern LogCallBackFunc g_logCallback;
     extern std::string g_logTag;
-    extern LogLevel g_mtDRLogLevel;
+    extern LogLevel g_logLevel;
 
     std::string logLevel2Str(LogLevel level);
 NS_CUSTOM_END
 
-#define MT_TARGET_LOG_LEVEL NS_CUSTOM::g_mtDRLogLevel
+#define MT_TARGET_LOG_LEVEL NS_CUSTOM::g_logLevel
 
 #if defined(PLATFORM_OSX)
 #define DEFAULT_LOG_BUFFER_SIZE 1024
 
 #define  LOGV(...)  { \
     do { \
-        if(MT_TARGET_LOG_LEVEL <= NS_CUSTOM::LogLevel::kLogInfo) { \
+        if(MT_TARGET_LOG_LEVEL <= NS_CUSTOM::LogLevel::kLogVerbose) { \
             if(NS_CUSTOM::g_logCallback) { \
                 char logBuffer[DEFAULT_LOG_BUFFER_SIZE]; \
                 snprintf(logBuffer, DEFAULT_LOG_BUFFER_SIZE, __VA_ARGS__); \
@@ -118,63 +118,75 @@ NS_CUSTOM_END
 #include <windows.h>
 #define DEFAULT_LOG_BUFFER_SIZE 1024
 #define LOGV(...) { \
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY); \
-    if(NS_CUSTOM::g_logCallback) { \
-        char logBuffer[DEFAULT_LOG_BUFFER_SIZE]; \
-        snprintf(logBuffer, DEFAULT_LOG_BUFFER_SIZE, __VA_ARGS__); \
-        NS_CUSTOM::g_logCallback(NS_CUSTOM::LogLevel::kLogVerbose, logBuffer); \
-    } else {          \
-        fprintf(stderr,"[%s][Verbose]: ", NS_CUSTOM::g_logTag.c_str());fprintf(stderr,__VA_ARGS__);fprintf(stderr,"\r\n"); \
-    } \
+    if(MT_TARGET_LOG_LEVEL <= NS_CUSTOM::LogLevel::kLogVerbose) { \
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY); \
+        if(NS_CUSTOM::g_logCallback) { \
+            char logBuffer[DEFAULT_LOG_BUFFER_SIZE]; \
+            snprintf(logBuffer, DEFAULT_LOG_BUFFER_SIZE, __VA_ARGS__); \
+            NS_CUSTOM::g_logCallback(NS_CUSTOM::LogLevel::kLogVerbose, logBuffer); \
+        } else {          \
+            fprintf(stderr,"[%s][Verbose]: ", NS_CUSTOM::g_logTag.c_str());fprintf(stderr,__VA_ARGS__);fprintf(stderr,"\r\n"); \
+        }               \
+    }                   \
 }
 #define LOGD(...) { \
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_GREEN | FOREGROUND_BLUE |  FOREGROUND_INTENSITY); \
-    if(NS_CUSTOM::g_logCallback) { \
-        char logBuffer[DEFAULT_LOG_BUFFER_SIZE]; \
-        snprintf(logBuffer, DEFAULT_LOG_BUFFER_SIZE, __VA_ARGS__); \
-        NS_CUSTOM::g_logCallback(NS_CUSTOM::LogLevel::kLogDebug, logBuffer); \
-    } else {          \
-        fprintf(stderr,"[%s][Debug]: ", NS_CUSTOM::g_logTag.c_str());fprintf(stderr,__VA_ARGS__);fprintf(stderr,"\r\n"); \
+    if(MT_TARGET_LOG_LEVEL <= NS_CUSTOM::LogLevel::kLogDebug) { \
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_GREEN | FOREGROUND_BLUE |  FOREGROUND_INTENSITY); \
+        if(NS_CUSTOM::g_logCallback) { \
+            char logBuffer[DEFAULT_LOG_BUFFER_SIZE]; \
+            snprintf(logBuffer, DEFAULT_LOG_BUFFER_SIZE, __VA_ARGS__); \
+            NS_CUSTOM::g_logCallback(NS_CUSTOM::LogLevel::kLogDebug, logBuffer); \
+        } else {          \
+            fprintf(stderr,"[%s][Debug]: ", NS_CUSTOM::g_logTag.c_str());fprintf(stderr,__VA_ARGS__);fprintf(stderr,"\r\n"); \
+        } \
     } \
 }
 #define LOGI(...) { \
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY); \
-    if(NS_CUSTOM::g_logCallback) { \
-        char logBuffer[DEFAULT_LOG_BUFFER_SIZE]; \
-        snprintf(logBuffer, DEFAULT_LOG_BUFFER_SIZE, __VA_ARGS__); \
-        NS_CUSTOM::g_logCallback(NS_CUSTOM::LogLevel::kLogInfo, logBuffer); \
-    } else {          \
-        fprintf(stderr,"[%s][Info]: ", NS_CUSTOM::g_logTag.c_str());fprintf(stderr,__VA_ARGS__);fprintf(stderr,"\r\n"); \
+    if(MT_TARGET_LOG_LEVEL <= NS_CUSTOM::LogLevel::kLogInfo) { \
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY); \
+        if(NS_CUSTOM::g_logCallback) { \
+            char logBuffer[DEFAULT_LOG_BUFFER_SIZE]; \
+            snprintf(logBuffer, DEFAULT_LOG_BUFFER_SIZE, __VA_ARGS__); \
+            NS_CUSTOM::g_logCallback(NS_CUSTOM::LogLevel::kLogInfo, logBuffer); \
+        } else {          \
+            fprintf(stderr,"[%s][Info]: ", NS_CUSTOM::g_logTag.c_str());fprintf(stderr,__VA_ARGS__);fprintf(stderr,"\r\n"); \
+        } \
     } \
 }
 #define LOGW(...) { \
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_GREEN | FOREGROUND_BLUE |  FOREGROUND_INTENSITY); \
-    if(NS_CUSTOM::g_logCallback) { \
-        char logBuffer[DEFAULT_LOG_BUFFER_SIZE]; \
-        snprintf(logBuffer, DEFAULT_LOG_BUFFER_SIZE, __VA_ARGS__); \
-        NS_CUSTOM::g_logCallback(NS_CUSTOM::LogLevel::kLogWarning, logBuffer); \
-    } else {          \
-        fprintf(stderr,"[%s][Warning]: ", NS_CUSTOM::g_logTag.c_str());fprintf(stderr,__VA_ARGS__);fprintf(stderr,"\r\n"); \
+    if(MT_TARGET_LOG_LEVEL <= NS_CUSTOM::LogLevel::kLogWarning) { \
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_GREEN | FOREGROUND_BLUE |  FOREGROUND_INTENSITY); \
+        if(NS_CUSTOM::g_logCallback) { \
+            char logBuffer[DEFAULT_LOG_BUFFER_SIZE]; \
+            snprintf(logBuffer, DEFAULT_LOG_BUFFER_SIZE, __VA_ARGS__); \
+            NS_CUSTOM::g_logCallback(NS_CUSTOM::LogLevel::kLogWarning, logBuffer); \
+        } else {          \
+            fprintf(stderr,"[%s][Warning]: ", NS_CUSTOM::g_logTag.c_str());fprintf(stderr,__VA_ARGS__);fprintf(stderr,"\r\n"); \
+        } \
     } \
 }
 #define LOGE(...) { \
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_RED |  FOREGROUND_INTENSITY); \
-    if(NS_CUSTOM::g_logCallback) { \
-        char logBuffer[DEFAULT_LOG_BUFFER_SIZE]; \
-        snprintf(logBuffer, DEFAULT_LOG_BUFFER_SIZE, __VA_ARGS__); \
-        NS_CUSTOM::g_logCallback(NS_CUSTOM::LogLevel::kLogError, logBuffer); \
-    } else { \
-        fprintf(stderr,"[%s][Error]: ", NS_CUSTOM::g_logTag.c_str());fprintf(stderr,__VA_ARGS__);fprintf(stderr,"\r\n%s(%d)\r\n",__FILE__,__LINE__); \
+    if(MT_TARGET_LOG_LEVEL <= NS_CUSTOM::LogLevel::kLogError) { \
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_RED |  FOREGROUND_INTENSITY); \
+        if(NS_CUSTOM::g_logCallback) { \
+            char logBuffer[DEFAULT_LOG_BUFFER_SIZE]; \
+            snprintf(logBuffer, DEFAULT_LOG_BUFFER_SIZE, __VA_ARGS__); \
+            NS_CUSTOM::g_logCallback(NS_CUSTOM::LogLevel::kLogError, logBuffer); \
+        } else { \
+            fprintf(stderr,"[%s][Error]: ", NS_CUSTOM::g_logTag.c_str());fprintf(stderr,__VA_ARGS__);fprintf(stderr,"\r\n%s(%d)\r\n",__FILE__,__LINE__); \
+        } \
     } \
 }
 #define LOGF(...) { \
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_RED |  FOREGROUND_INTENSITY); \
-    if (NS_CUSTOM::g_logCallback) { \
-        char logBuffer[DEFAULT_LOG_BUFFER_SIZE]; \
-        snprintf(logBuffer, DEFAULT_LOG_BUFFER_SIZE, __VA_ARGS__); \
-        NS_CUSTOM::g_logCallback(NS_CUSTOM::LogLevel::kLogFatal, logBuffer); \
-    } else {          \
-        fprintf(stderr,"[%s][Fatal]: ", NS_CUSTOM::g_logTag.c_str());fprintf(stderr,__VA_ARGS__);fprintf(stderr,"\r\n%s(%d)\r\n",__FILE__,__LINE__); \
+    if(MT_TARGET_LOG_LEVEL <= NS_CUSTOM::LogLevel::kLogFatal) { \
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_RED |  FOREGROUND_INTENSITY); \
+        if (NS_CUSTOM::g_logCallback) { \
+            char logBuffer[DEFAULT_LOG_BUFFER_SIZE]; \
+            snprintf(logBuffer, DEFAULT_LOG_BUFFER_SIZE, __VA_ARGS__); \
+            NS_CUSTOM::g_logCallback(NS_CUSTOM::LogLevel::kLogFatal, logBuffer); \
+        } else {          \
+            fprintf(stderr,"[%s][Fatal]: ", NS_CUSTOM::g_logTag.c_str());fprintf(stderr,__VA_ARGS__);fprintf(stderr,"\r\n%s(%d)\r\n",__FILE__,__LINE__); \
+        } \
     } \
 }
 
