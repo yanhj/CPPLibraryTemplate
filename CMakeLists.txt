@@ -39,7 +39,7 @@ endif()
 
 if (MSVC)
     set(BUILD_FRAMEWORK OFF)
-    add_definitions(-DEXAMPLE_BUILD)
+    add_definitions(-DCUSTOM_BUILD)
     add_compile_options(/EHsc)
     # 解决Windows下需要UTF-8带签名编码字符集问题
     add_compile_options("$<$<C_COMPILER_ID:MSVC>:/source-charset:utf-8>")
@@ -55,12 +55,12 @@ set(CMAKE_CXX_STANDARD 11)
 
 # [*] set build flag
 if (BUILD_SCRIPT)
-    add_definitions(-DEXAMPLE_BUILD)
+    add_definitions(-DCUSTOM_BUILD)
 endif ()
 
 # [*] set static flag
 if (NOT BUILD_SHARED_LIBS)
-    add_definitions(-DEXAMPLE_STATIC)
+    add_definitions(-DCUSTOM_STATIC)
 endif (NOT BUILD_SHARED_LIBS)
 
 # add include

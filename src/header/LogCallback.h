@@ -13,6 +13,9 @@
 #include "Define.h"
 
 NS_CUSTOM_BEGIN
-    EXAMPLE_API_C void setLogCallback(std::function<void(int level, const char *log)> logCallback);
-    EXAMPLE_API_C void setLogLevel(LogLevel level);
+    class CUSTOM_API Log {
+    public:
+        static void setLogCallback(std::function<void(LogLevel level, const char *log)> logCallback);
+        static void setLogLevel(LogLevel level);
+    };
 NS_CUSTOM_END

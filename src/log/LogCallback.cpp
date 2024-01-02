@@ -12,11 +12,11 @@
 //日志回调
 NS_CUSTOM_BEGIN
 
-    void setLogCallback(std::function<void(LogLevel level, const char *log)> logCallback) {
+    void Log::setLogCallback(std::function<void(LogLevel level, const char *log)> logCallback) {
         g_logCallback = logCallback;
     }
 
-    void setLogLevel(LogLevel level) {
+    void Log::setLogLevel(LogLevel level) {
         g_logLevel = level;
     }
 

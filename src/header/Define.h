@@ -10,20 +10,20 @@
 
 ////////// platform & export //////////
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(WIN64) || defined(_WIN64_) || defined(_WIN64)
-#   ifdef EXAMPLE_STATIC
-#       define EXAMPLE_API
+#   ifdef CUSTOM_STATIC
+#       define CUSTOM_API
 #   else
-#       ifdef EXAMPLE_BUILD
-#           define EXAMPLE_API __declspec(dllexport)
+#       ifdef CUSTOM_BUILD
+#           define CUSTOM_API __declspec(dllexport)
 #       else
-#           define EXAMPLE_API __declspec(dllimport)
+#           define CUSTOM_API __declspec(dllimport)
 #       endif
 #   endif
 #else
-#   if !defined(EXAMPLE_STATIC) && defined(EXAMPLE_BUILD)
-#       define EXAMPLE_API __attribute__((visibility("default")))
+#   if !defined(CUSTOM_STATIC) && defined(CUSTOM_BUILD)
+#       define CUSTOM_API __attribute__((visibility("default")))
 #   else
-#       define EXAMPLE_API
+#       define CUSTOM_API
 #   endif
 #endif
 
@@ -61,9 +61,9 @@
 
 
 #ifdef __cplusplus
-#  define EXAMPLE_API_C extern "C"
+#  define CUSTOM_API_C extern "C"
 #else
-#  define EXAMPLE_API_C
+#  define CUSTOM_API_C
 #endif
 
 #define NS_CUSTOM custom_lib
