@@ -103,7 +103,7 @@ NS_CUSTOM_END
             if(NS_CUSTOM::g_logCallback) { \
                 char logBuffer[DEFAULT_LOG_BUFFER_SIZE]; \
                 snprintf(logBuffer, DEFAULT_LOG_BUFFER_SIZE, __VA_ARGS__); \
-                NS_CUSTOM::g_logCallback(NS_CUSTOM::LogLevel::kLogError, logBuffer); \
+                NS_CUSTOM::g_logCallback(NS_CUSTOM::LogLevel::kLogFatal, logBuffer); \
             } else { \
                 printf("[%s][Fatal]: ", NS_CUSTOM::g_logTag.c_str());printf(__VA_ARGS__);printf("\n"); \
             } \
