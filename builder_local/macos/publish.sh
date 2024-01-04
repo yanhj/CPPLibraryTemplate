@@ -86,7 +86,9 @@ git lfs track "*.tar.gz"
 
 rm -rf ./macos
 echo "cp file..."
-cp -rf "${BUILD_OUTPUT}"/ ./macos
+# -R : copy all files and directories recursively, keep the file link property
+# -f : remove existing destination files
+cp -Rf "${BUILD_OUTPUT}"/ ./macos
 
 # 获取tag
 tag_name=${BUILDER_CONFIG_USE_TAG}

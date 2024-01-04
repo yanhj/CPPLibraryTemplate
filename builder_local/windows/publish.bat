@@ -105,8 +105,9 @@ if exist "%dest_dir%" (
 )
 
 rem 拷贝文件
-echo XCOPY /S /Y "%source_dir%" "%dest_dir%"
-XCOPY /S /Y "%source_dir%" "%dest_dir%"
+rem -J keep the file link property
+echo XCOPY /S /Y /J "%source_dir%" "%dest_dir%"
+XCOPY /S /Y /J "%source_dir%" "%dest_dir%"
 
 rem read tag_name from file
 cd "%current_dir%"
