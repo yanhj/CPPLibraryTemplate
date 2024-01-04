@@ -6,5 +6,6 @@ third_party/modules/*
 !third_party/modules/gitem.config.json
 output/
 Install/
+build/
 src/ProjectVersion.h
 

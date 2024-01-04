@@ -29,7 +29,8 @@ include(ImportPlatformDefined)
 include(builder_local/Config/ProjectVersion-config)
 
 set(BUILD_EXEC OFF)
-set(BUILD_SHARED_LIBS ON)
+#BUILD_SHARED_LIBS 通过外部传入
+#set(BUILD_SHARED_LIBS OFF)
 set(BUILD_FRAMEWORK ON)
 
 # 引入配置

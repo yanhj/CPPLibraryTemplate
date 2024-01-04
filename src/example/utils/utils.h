@@ -9,8 +9,7 @@
 
 namespace example {
 
-    class EXAMPLE_API Utils {
-
+    class CUSTOM_API Utils {
     public:
 
         static void PrintSystem();

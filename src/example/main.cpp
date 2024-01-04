@@ -2,6 +2,7 @@
 #include <iostream>
 #include "log/log.h"
 #include "utils/utils.h"
+#include "Version.h"
 
 int main()
 {
