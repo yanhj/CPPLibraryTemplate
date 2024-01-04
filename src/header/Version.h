@@ -13,6 +13,6 @@
 
 NS_CUSTOM_BEGIN
 
-std::string fullVersion();
+CUSTOM_API std::string fullVersion();
 
 NS_CUSTOM_END
