@@ -11,7 +11,7 @@
 
 NS_CUSTOM_BEGIN
     enum LogLevel {
-        kLogAll	= 0x0000,
+        kLogAll	    = 0x0000,
         kLogVerbose = 0x0001,
         kLogDebug	= 0x0002,
         kLogInfo	= 0x0004,
