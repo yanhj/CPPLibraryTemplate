@@ -13,7 +13,7 @@ if(MSVC)
 
     if("${CMAKE_SIZEOF_VOID_P}" EQUAL "4")
         set(libCustomLib_LIB_ROOT "${libCustomLib_LIB_ROOT}/x86")
-    else("${CMAKE_SIZEOF_VOID_P}" EQUAL "8")
+    else("${CMAKE_SIZEOF_VOID_P}" EQUAL "4")
         set(libCustomLib_LIB_ROOT "${libCustomLib_LIB_ROOT}/x64")
     endif("${CMAKE_SIZEOF_VOID_P}" EQUAL "4")
 
