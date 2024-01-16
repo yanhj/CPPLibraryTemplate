@@ -2,8 +2,8 @@ cmake-build-*
 .idea
 builder_local/build_app
 .vscode
-third_party/modules/*
-!third_party/modules/gitem.config.json
+3rdparty/modules/*
+!3rdparty/modules/gitem.config.json
 output/
 Install/
 build/

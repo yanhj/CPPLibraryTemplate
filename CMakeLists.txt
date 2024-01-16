@@ -22,8 +22,8 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR})
 include(ImportAutoGroupFunction)
 include(ImportHeadersHelper)
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR}/third_party/modules/CMakeModule)
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR}/third_party/CMakeModules)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR}/3rdparty/modules/CMakeModule)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR}/3rdparty/CMakeModules)
 
 include(ImportPlatformDefined)
 include(builder_local/Config/ProjectVersion-config)

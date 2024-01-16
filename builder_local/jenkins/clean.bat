@@ -9,7 +9,7 @@ git clean -df
 git reset --hard
 git submodule update --init --recursive
 
-cd %CURRENT_DIR%..\..\third_party
-%CURRENT_DIR%../../third_party/update_gitem_fast.bat
+cd %CURRENT_DIR%..\..\3rdparty
+%CURRENT_DIR%../../3rdparty/update_gitem_fast.bat
 exit /b 0
 ::pause

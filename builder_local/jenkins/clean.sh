@@ -11,6 +11,6 @@ git clean -df
 git reset --hard
 git submodule update --init --recursive
 
-. ${CURRENT_DIR}/../../third_party/update_gitem_fast.sh
+. ${CURRENT_DIR}/../../3rdparty/update_gitem_fast.sh
 
 popd # ${CURRENT_DIR}
